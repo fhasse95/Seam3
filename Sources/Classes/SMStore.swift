@@ -639,7 +639,12 @@ open class SMStore: NSIncrementalStore {
                     }
                     completion?(result, error)
                 }
-                self.operationQueue?.addOperation(self.syncOperation!)
+                
+                if let syncOperation = self.syncOperation,
+                   let operationQueue = self.operationQueue,
+                   !operationQueue.operations.contains(syncOperation){
+                    self.operationQueue?.addOperation(syncOperation)
+                }
             }
         }
         
