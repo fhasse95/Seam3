@@ -785,6 +785,8 @@ open class SMStore: NSIncrementalStore {
         
         var fetchError: Error?
         var incrementalStoreNode = NSIncrementalStoreNode(objectID: objectID, withValues: [:], version: 1)
+        
+        self.backingMOC.refreshAllObjects()
         self.backingMOC.performAndWait {
             do {
                 let results = try self.backingMOC.fetch(fetchRequest)

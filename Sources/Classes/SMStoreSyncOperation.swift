@@ -249,7 +249,7 @@ class SMStoreSyncOperation: Operation {
         // because this is the maximum number of items possible in a single modify request.
         if let splitChangedRecords = self.splitArray(Array(changedRecords.values), maximumNumberOfItems: 400) as? [[CKRecord]],
            let splitDeletedRecordIDs = self.splitArray(deletedCKRecordIDs, maximumNumberOfItems: 400) as? [[CKRecord.ID]] {
-            for index in 0...max(splitChangedRecords.count, splitDeletedRecordIDs.count) {
+            for index in 0..<max(splitChangedRecords.count, splitDeletedRecordIDs.count) {
                 let changedRecords = splitChangedRecords.count > index ? splitChangedRecords[index] : nil
                 let deletedRecordIDs = splitDeletedRecordIDs.count > index ? splitDeletedRecordIDs[index] : nil
                 
@@ -363,6 +363,7 @@ class SMStoreSyncOperation: Operation {
         var insertedOrUpdatedCKRecords: Array<CKRecord> = []
         var deletedCKRecordIDs: Array<CKRecord.ID> = []
         var executeError: Error?
+        
         self.localStoreMOC!.performAndWait {
             do {
                 insertedOrUpdatedCKRecords = try changeSetHandler.recordsForUpdatedObjects(backingContext: self.localStoreMOC!) ?? []
